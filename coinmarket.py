@@ -1,4 +1,4 @@
-from coinmarketcap import Market
+from brokers.coinmarketcap import Market
 coinmarketcap = Market()
 
 # https://www.cryptocompare.com/api/#introduction
