@@ -30,7 +30,7 @@ class Strategy():
         self.volume_drop_magnitude_coefficient = user.volume_drop_magnitude_coefficient 
         self.price_drop_magnitude_coefficient = user.price_drop_magnitude_coefficient
     
-        log.general('\nRunning strategy')
+        log.general('\nRunning strategy\n')
 
         self.all_coin_data = broker.get_data_for_all_coins('bittrex') # used to get all the symbols
 
@@ -126,6 +126,7 @@ class Strategy():
 
 
     def seek(self):
+        log.general('Seeking trades...')
         try:
             while True:
                 time.sleep(self.refresh_rate)
@@ -134,9 +135,10 @@ class Strategy():
                     if self.entry_conditions():
                         if trade.open('bittrex', self.current_trade_pair):
                             self.queue = 'busy'
-                if self.exit_conditions(self.current_trade_pair):
-                    trade.close('bittrex', self.current_trade_pair) # get back into bitcoin
-                    self.queue = 'free' # reset the queue
+                if self.queue is 'busy':
+                    if self.exit_conditions(self.current_trade_pair):
+                        trade.close('bittrex', self.current_trade_pair) # get back into bitcoin
+                        self.queue = 'free' # reset the queue
         except KeyboardInterrupt:
             pass
 
@@ -144,16 +146,3 @@ class Strategy():
 
     def run(self):
         self.seek()
-
-
-
-    
-
-
-
-
-
-
-
-
-
