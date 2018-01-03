@@ -1,0 +1,6 @@
+gunicorn==19.4.5
+flask
+numpy
+requests
+six
+
