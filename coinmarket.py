@@ -6,9 +6,8 @@ coinmarketcap = Market()
 
 
 class CoinMarket():
-
-
-
+    
+    
     def General(self):
         print(coinmarketcap.stats())
 
@@ -39,10 +38,10 @@ class CoinMarket():
 
 
 
-
     def PercentChange1Hour(self, coin):
         return (coinmarketcap.ticker(coin, limit=3, convert='USD'))[0]['percent_change_1h']
 
+    
 
     def PercentChange24Hours(self, coin):
         return (coinmarketcap.ticker(coin, limit=3, convert='USD'))[0]['percent_change_24h']
