@@ -1,10 +1,10 @@
 # keys + user settings
 
-bittrex_public_key = ""
-bittrex_private_key = ""
+bittrex_public_key = "2d0187a6287247ac847144ddceb562c2"
+bittrex_private_key = "a096351c202447bfab66f0609353f782"
 
-binance_public_key = ""
-binance_private_key = ""
+binance_public_key = "1gg6se9Izi0MGMW3AkfMxTag1vP2z6FhqVuWXnQd1DyQm9bLykJYmkY1cEQ0jq2g"
+binance_private_key = "u5voozvtakpycxMFbT9YFXFGbmyn9lD9aRIUOkOUzI7BYDzVQTKQ7Izhi5mJpOiw"
 
 # run mode
 
