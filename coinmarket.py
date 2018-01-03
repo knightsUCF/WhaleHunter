@@ -8,40 +8,40 @@ coinmarketcap = Market()
 class CoinMarket():
     
     
-    def General(self):
+    def general(self):
         print(coinmarketcap.stats())
 
 
 
-    def Stats(self, coin):
+    def stats(self, coin):
         return (coinmarketcap.ticker(coin, limit=3, convert='USD'))
 
 
 
-    def Rank(self, coin):
+    def rank(self, coin):
         return (coinmarketcap.ticker(coin, limit=3, convert='USD'))[0]['rank']
 
     
 
-    def PriceUSD(self, coin):
+    def price_usd(self, coin):
         return (coinmarketcap.ticker(coin, limit=3, convert='USD'))[0]['price_usd']
 
 
 
-    def PriceBTC(self, coin):
+    def price_btc(self, coin):
         return (coinmarketcap.ticker(coin, limit=3, convert='USD'))[0]['price_btc']
 
 
 
-    def Volume(self, coin):
+    def volume(self, coin):
         return (coinmarketcap.ticker(coin, limit=3, convert='USD'))[0]['24h_volume_usd']
 
 
 
-    def PercentChange1Hour(self, coin):
+    def percent_change_one_hour(self, coin):
         return (coinmarketcap.ticker(coin, limit=3, convert='USD'))[0]['percent_change_1h']
 
     
 
-    def PercentChange24Hours(self, coin):
+    def percent_change_24_hours(self, coin):
         return (coinmarketcap.ticker(coin, limit=3, convert='USD'))[0]['percent_change_24h']
