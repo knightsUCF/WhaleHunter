@@ -1,4 +1,4 @@
-Whale Hunter 1.0.0
+<h1>Whale Hunter 1.0.0</h1>
 
 Automated trading of pump and dumps.
 
