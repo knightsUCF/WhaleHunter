@@ -1,5 +1,6 @@
 <h1>Whale Hunter 1.0.0</h1>
-
+<p>
+<br>
 Automated trading of pump and dumps.
 
 1. navigate to folder and install requirements: 
