@@ -126,21 +126,16 @@ class Strategy():
 
 
     def seek(self):
-        log.general('Seeking trades...')
-        try:
-            while True:
-                time.sleep(self.refresh_rate)
-                # if self.can_trade is 'yes' and self.queue is 'free': # can_trade is an extra conditional for any sort of check to see if we can trade
-                if self.queue is 'free':
-                    if self.entry_conditions():
-                        if trade.open('bittrex', self.current_trade_pair):
-                            self.queue = 'busy'
-                if self.queue is 'busy':
-                    if self.exit_conditions(self.current_trade_pair):
-                        trade.close('bittrex', self.current_trade_pair) # get back into bitcoin
-                        self.queue = 'free' # reset the queue
-        except KeyboardInterrupt:
-            pass
+        time.sleep(0.1)
+        log.general('Running trade management')
+        if self.queue is 'free':
+            if self.entry_conditions():
+                if trade.open('bittrex', self.current_trade_pair):
+                    self.queue = 'busy'
+        if self.queue is 'busy':
+            if self.exit_conditions(self.current_trade_pair):
+                trade.close('bittrex', self.current_trade_pair) # get back into bitcoin
+                self.queue = 'free' # reset the queue
 
 
 
