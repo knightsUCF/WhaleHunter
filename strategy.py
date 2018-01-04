@@ -130,8 +130,8 @@ class Strategy():
         log.general('Running trade management')
         if self.queue is 'free':
             if self.entry_conditions():
-                if trade.open('bittrex', self.current_trade_pair):
-                    self.queue = 'busy'
+                trade.open('bittrex', self.current_trade_pair)
+                self.queue = 'busy'
         if self.queue is 'busy':
             if self.exit_conditions(self.current_trade_pair):
                 trade.close('bittrex', self.current_trade_pair) # get back into bitcoin
