@@ -86,7 +86,7 @@ class Strategy():
 
 
     def drop_in_price(self, broker, pair):
-        if self.current_price(broker, pair) < (self.average_price(broker, pair, self.exit_lookback) * self.price_drop_magnitude_coefficient):
+        if self.current_price(broker, pair) > (self.average_price(broker, pair, self.exit_lookback) * self.price_drop_magnitude_coefficient):
             return True
         else:
             return False
@@ -94,7 +94,7 @@ class Strategy():
 
 
     def drop_in_volume(self, broker, pair):
-        if self.current_volume() < (self.average_volume(broker, pair, self.exit_lookback) * self.volume_drop_magnitude_coefficient):
+        if self.current_volume() > (self.average_volume(broker, pair, self.exit_lookback) * self.volume_drop_magnitude_coefficient):
             return True
         else:
             return False 
