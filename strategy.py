@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import re
+import txt
 import time
 import user
 import log
@@ -13,6 +14,7 @@ import gui
 
 trade = trade.Trade()
 feed = feed.Feed()
+txt = txt.TXT()
 
 
 
@@ -21,7 +23,7 @@ class Strategy():
 
     def __init__(self):
         # feed.initialize_databases('bittrex_tape.db', 'binance_tape.db')
-        self.refresh_rate = 0.5
+        self.refresh_rate = 0.1
         self.mode = user.mode
         self.entry_lookback = user.entry_lookback
         self.exit_lookback = user.exit_lookback
@@ -29,16 +31,7 @@ class Strategy():
         self.price_spike_magnitude_coefficient = user.price_spike_magnitude_coefficient
         self.volume_drop_magnitude_coefficient = user.volume_drop_magnitude_coefficient 
         self.price_drop_magnitude_coefficient = user.price_drop_magnitude_coefficient
-    
-        log.general('\nRunning strategy\n')
-
         self.all_coin_data = broker.get_data_for_all_coins('bittrex') # used to get all the symbols
-
-
-
-         
-
-
         self.queue = 'free'
         self.can_trade = 'yes'
 
@@ -56,7 +49,7 @@ class Strategy():
 
 
 
-    def average_volume(self, broker, pair, number_of_data_points): 
+    def average_volume(self, broker, pair, number_of_data_points):
         total = 0
         for i in range(number_of_data_points):
             total += feed.get_last_x_record(broker, pair,'volume', i)
@@ -65,7 +58,8 @@ class Strategy():
 
 
 
-    def average_price(self, broker, pair, number_of_data_points): 
+    def average_price(self, broker, pair, number_of_data_points):
+
         total = 0
         for i in range(number_of_data_points):
             total += feed.get_last_x_record(broker, pair,'price', i)
@@ -83,6 +77,7 @@ class Strategy():
 
     
     def spike_in_volume(self, broker, pair):
+        print('checking for spike in volume')
         if self.current_volume(broker, pair) > (self.average_volume(broker, pair, self.entry_lookback) * self.volume_spike_magnitude_coefficient):
             return True
         else:
@@ -107,13 +102,17 @@ class Strategy():
 
 
     def entry_conditions(self):
+        print('\nLooking for entry conditions:\n')
         for i in self.all_coin_data:
-            pair_symbol = re.sub('-','',i['MarketName'])
-            if self.spike_in_volume('bittrex', pair_symbol) and self.spike_in_price('bittrex', pair_symbol):
-                self.current_trade_pair = pair_symbol
+            symbol = re.sub('-','',i['MarketName'])
+            # if self.spike_in_volume('bittrex', symbol) and self.spike_in_price('bittrex', symbol):
+            if self.spike_in_price('bittrex', symbol):
+                print('\nFound a pair which meets entry criteria')
+                self.current_trade_pair = symbol
                 return True
             else:
                 return False
+            
 
 
 
@@ -124,10 +123,28 @@ class Strategy():
             return False
             
 
+    '''
+    def seek(self):
+        log.general('Seeking trades...\n')
+        try:
+            while True:
+                time.sleep(self.refresh_rate)
+                log.general('Seeking trades...\n')
+                # if self.can_trade is 'yes' and self.queue is 'free': # can_trade is an extra conditional for any sort of check to see if we can trade
+                if self.queue is 'free':
+                    if self.entry_conditions():
+                        if trade.open('bittrex', self.current_trade_pair):
+                            self.queue = 'busy'
+                if self.queue is 'busy':
+                    if self.exit_conditions(self.current_trade_pair):
+                        trade.close('bittrex', self.current_trade_pair) # get back into bitcoin
+                        self.queue = 'free' # reset the queue
+        except KeyboardInterrupt:
+            pass
+    '''
 
     def seek(self):
-        time.sleep(0.1)
-        log.general('Running trade management')
+        print('\nQueue status: ', self.queue, '\n')
         if self.queue is 'free':
             if self.entry_conditions():
                 trade.open('bittrex', self.current_trade_pair)
@@ -136,8 +153,22 @@ class Strategy():
             if self.exit_conditions(self.current_trade_pair):
                 trade.close('bittrex', self.current_trade_pair) # get back into bitcoin
                 self.queue = 'free' # reset the queue
-
+                
 
 
     def run(self):
         self.seek()
+
+
+
+    
+
+'''
+s = Strategy()
+print(s.current_volume('bittrex', 'BTCETH'))
+'''
+
+
+
+
+
