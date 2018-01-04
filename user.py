@@ -39,8 +39,8 @@ strategy_4 = False
 
 # strategy 1 settings:
 
-entry_lookback = 30 # ten of time series data "time units" (candlebuilding)
-exit_lookback = 10
+entry_lookback = 1 # ten of time series data "time units" (candlebuilding)
+exit_lookback = 1
 volume_spike_magnitude_coefficient = 1.0 # 1.0 is 100%, unchanged
 price_spike_magnitude_coefficient = 1.0 
 volume_drop_magnitude_coefficient = 1.0
