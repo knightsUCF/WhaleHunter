@@ -1,15 +1,18 @@
 #!/usr/bin/python3
 
 import re
+import txt
 import log
 import time
 import user
+import write
 import random
 import broker
 import sqlite3
 import datetime
 from multiprocessing import Process
 
+txt = txt.TXT()
 
 
 class Feed():
@@ -17,9 +20,9 @@ class Feed():
 
     def __init__(self):
         self.initialize_databases('bittrex_tape.db', 'binance_tape.db')
-        self.bittrex_refresh_rate = 0.2
+        self.bittrex_refresh_rate = 1
         self.binance_refresh_rate = (random.randint(1,3))
-        log.general('\nRunning feed')
+        # log.general('\nRunning feed')
 
 
 
@@ -78,6 +81,8 @@ class Feed():
             while True:
                 time.sleep(self.bittrex_refresh_rate)
                 all_coin_data = broker.get_data_for_all_coins('bittrex') # bids = broker.get_bids()
+                txt.write('db_state.txt', 'locked')
+                print('db_state: locked')
                 for i in all_coin_data:
                     coin_table = re.sub('-','',i['MarketName'])
                     bid = i['Bid']
@@ -86,10 +91,46 @@ class Feed():
                     # print('    Getting bittrex data for: ', coin_table)
                     self.create_bittrex_table(coin_table)
                     self.write_to_bittrex_database(coin_table, bid, volume)
-        except:
-            self.get_bittrex_tape()
-        finally:
+                self.binance_db.close()
+                txt.write('db_state.txt', 'unlocked')
+                print('db_state: unlocked')
+
+        except KeyboardInterrupt:
             self.bittrex_db.close()
+        except:
+            print('Reconnecting')
+            self.get_bittrex_tape()
+
+
+
+    def get_bittrex_tape_single_round(self):
+        try:
+            time.sleep(self.bittrex_refresh_rate)
+            all_coin_data = broker.get_data_for_all_coins('bittrex')
+            for i in all_coin_data:
+                coin_table = re.sub('-','',i['MarketName'])
+                bid = i['Bid']
+                volume = i['Volume']
+                print('Getting bittrex data for: ', coin_table, '  ', end='\r')
+                self.create_bittrex_table(coin_table)
+                self.write_to_bittrex_database(coin_table, bid, volume)
+        except KeyboardInterrupt:
+            self.bittrex_db.close()
+        '''
+        except:
+            print('')
+            print('Reconnecting')
+            self.bittrex_db.close()
+            time.sleep(self.bittrex_refresh_rate)
+            self.get_bittrex_tape_single_round()
+        '''
+            
+        '''    
+        finally:
+            time.sleep(0.1)
+            ('Reconnecting to bittrex feed...')
+            self.get_bittrex_tape()
+        '''
 
 
 
@@ -107,10 +148,12 @@ class Feed():
                         print('    Getting binance data for: ', coin_table)
                         self.create_binance_table(coin_table)
                         self.write_to_binance_database(coin_table, bid, volume)
-        except:
-            self.get_binance_tape()
-        finally:
+        except KeyboardInterrupt:
             self.binance_db.close()
+        '''    
+        finally:
+            self.get_binance_tape()
+        '''    
 
 
 
@@ -121,35 +164,27 @@ class Feed():
             rows = self.bittrex_cursor.fetchall()
             result = rows[len(rows)-records if records else 0:]
             return result
-
-
-
-
-    '''
-    def get_last_x_record(self, broker, coin, column, record):
-        if broker == 'bittrex':
-            query = "SELECT {0} from {1};".format(column, coin)
-            self.bittrex_cursor.execute(query)
-            rows = self.bittrex_cursor.fetchall()
-            result = rows[len(rows)-record if record else 0:]
-            return result[record]
-    '''
-
-
-
-    def get_last_x_record(self, broker, coin, column, record):
-        records = None
-        if broker == 'bittrex':
-            query = "SELECT {0} from {1} ORDER BY ID DESC;".format(column, coin)
-            self.bittrex_cursor.execute(query)
-            rows = self.bittrex_cursor.fetchall()
-            result = rows[len(rows)-records if records else 0:]
-            result = str(result[record])
-            result = re.sub(',', '', result)
-            result = result.replace('(', '')
-            result = result.replace(')', '')
-            return float(result)
+            
+            
     
+    def get_last_x_record(self, broker, coin, column, record):
+        self.bittrex_db = sqlite3.connect('bittrex_tape.db')
+        self.bittrex_cursor = self.bittrex_db.cursor()
+        records = None
+        try:
+            if broker == 'bittrex':
+                query = "SELECT {0} from {1} ORDER BY ID DESC;".format(column, coin)
+                self.bittrex_cursor.execute(query)
+                rows = self.bittrex_cursor.fetchall()
+                self.bittrex_db.close()
+                result = rows[len(rows)-records if records else 0:]
+                result = str(result[record])
+                result = re.sub(',', '', result)
+                result = result.replace('(', '')
+                result = result.replace(')', '')
+                return float(result)
+        except:
+            print('Need more data points in database. Rerun without strategy.')
 
 
     def run(self):
@@ -169,6 +204,39 @@ class Feed():
 
 
 
+
+'''
+    def get_last_x_record(self, broker, coin, column, record):
+        if broker == 'bittrex':
+            query = "SELECT {0} from {1};".format(column, coin)
+            self.bittrex_cursor.execute(query)
+            rows = self.bittrex_cursor.fetchall()
+            result = rows[len(rows)-record if record else 0:]
+            return result[record]
+'''
+'''
+    def get_last_x_record(self, broker, coin, column, record):
+        while True:
+            try:
+                time.sleep(0.01)
+                if txt.read('db_state.txt') is 'unlocked':
+                    self.bittrex_db = sqlite3.connect('bittrex_tape.db')
+                    self.bittrex_cursor = self.bittrex_db.cursor()
+                    records = None
+                    if broker == 'bittrex':
+                        query = "SELECT {0} from {1} ORDER BY ID DESC;".format(column, coin)
+                        self.bittrex_cursor.execute(query)
+                        rows = self.bittrex_cursor.fetchall()
+                        self.bittrex_db.close()
+                        result = rows[len(rows)-records if records else 0:]
+                        result = str(result[record])
+                        result = re.sub(',', '', result)
+                        result = result.replace('(', '')
+                        result = result.replace(')', '')
+                        return float(result)
+            except:
+                continue
+'''
 
 
 
