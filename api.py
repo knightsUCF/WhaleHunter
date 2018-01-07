@@ -5,8 +5,8 @@ import pprint
 
 
 class API():
-
-
+	
+	
 	def get(self, url):
 		response = requests.get(url)
 		json_response = response.json()
