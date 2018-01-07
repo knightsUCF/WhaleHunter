@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 
-
-
 import log
 import feed
 import strategy
@@ -25,6 +23,11 @@ def run():
 
 
 run()
+
+
+
+
+
 
 
 '''
