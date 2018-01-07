@@ -20,8 +20,8 @@ class API():
 
 
     def post_with_header(self, url, data, header): # header format: {'element': data}
-        reponse = requests.request('POST', url, data = data, header = header)
-        return reponse
+        response = requests.request('POST', url, data = data, header = header)
+        return response
 
 
 
