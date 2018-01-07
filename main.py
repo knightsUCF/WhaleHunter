@@ -16,7 +16,7 @@ def run():
         try:
             log.general('\n>>> Getting feed data >>>\n')
             feed.get_bittrex_tape()
-            feed.get_binance_tape()
+            # feed.get_binance_tape() # test later after ban is lifted
             print('')
             strategy.seek()
         except KeyboardInterrupt:
