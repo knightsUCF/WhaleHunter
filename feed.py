@@ -20,7 +20,7 @@ class Feed():
     def __init__(self):
         self.initialize_databases('bittrex_tape.db', 'binance_tape.db')
         self.bittrex_refresh_rate = 1
-        self.binance_refresh_rate = (random.randint(1,3))
+        self.binance_refresh_rate = (random.randint(3,10)) # very picky broker
         # log.general('\nRunning feed')
 
 
