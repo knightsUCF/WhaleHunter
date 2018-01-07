@@ -73,3 +73,6 @@ for x in elements:
    print("VLAN: {0} \t NAME: {1}".format(x['vlan_id'], x['name']))
 
 '''
+
+
+
