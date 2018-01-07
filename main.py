@@ -15,7 +15,8 @@ def run():
     while True:
         try:
             log.general('\n>>> Getting feed data >>>\n')
-            feed.get_bittrex_tape_single_round()
+            feed.get_bittrex_tape()
+            feed.get_binance_tape()
             print('')
             strategy.seek()
         except KeyboardInterrupt:
@@ -51,19 +52,17 @@ gui = gui.GUI()
 
 
 def run():
-    
+
     feed_process = Process(target = feed.run)
     feed_process.start()
-    
+
     strategy_process = Process(target = strategy.run)
     strategy_process.start()
 
     gui_process = Process(target = gui.run)
     gui_process.start()
-    
+
 
 
 run()
 '''
-
-
