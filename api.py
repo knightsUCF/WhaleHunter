@@ -7,7 +7,7 @@ import pprint
 class API():
 
 
-	def get(self, url):
+    def get(self, url):
 		response = requests.get(url)
 		json_response = response.json()
 		return json_response
