@@ -34,7 +34,7 @@ class Feed():
         except sqlite3.Error as e:
             log.error('E2: No database connection')
 
- 
+
 
     def create_bittrex_table(self, coin):
         self.bittrex_cursor.execute('''
@@ -49,7 +49,7 @@ class Feed():
             CREATE TABLE IF NOT EXISTS {0}(id INTEGER PRIMARY KEY AUTOINCREMENT, time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
             price REAL, volume REAL)'''.format(coin))
         self.binance_db.commit()
-        
+
 
 
 
@@ -73,36 +73,9 @@ class Feed():
         except sqlite3.IntegrityError:
             log.error('E3: Record already exists')
 
-    
-    
+
+
     def get_bittrex_tape(self):
-        try:
-            while True:
-                time.sleep(self.bittrex_refresh_rate)
-                all_coin_data = broker.get_data_for_all_coins('bittrex') # bids = broker.get_bids()
-                txt.write('db_state.txt', 'locked')
-                print('db_state: locked')
-                for i in all_coin_data:
-                    coin_table = re.sub('-','',i['MarketName'])
-                    bid = i['Bid']
-                    volume = i['Volume']
-                    # print('    Getting bittrex data for: ', coin_table, '  ', end='\r')
-                    # print('    Getting bittrex data for: ', coin_table)
-                    self.create_bittrex_table(coin_table)
-                    self.write_to_bittrex_database(coin_table, bid, volume)
-                self.binance_db.close()
-                txt.write('db_state.txt', 'unlocked')
-                print('db_state: unlocked')
-
-        except KeyboardInterrupt:
-            self.bittrex_db.close()
-        except:
-            print('Reconnecting')
-            self.get_bittrex_tape()
-
-
-
-    def get_bittrex_tape_single_round(self):
         try:
             time.sleep(self.bittrex_refresh_rate)
             all_coin_data = broker.get_data_for_all_coins('bittrex')
@@ -110,49 +83,28 @@ class Feed():
                 coin_table = re.sub('-','',i['MarketName'])
                 bid = i['Bid']
                 volume = i['Volume']
-                # print('Getting bittrex data for: ', coin_table, '  ', end='\r')
+                print('Getting bittrex data for: ', coin_table, '  ', end='\r')
                 self.create_bittrex_table(coin_table)
                 self.write_to_bittrex_database(coin_table, bid, volume)
         except KeyboardInterrupt:
             self.bittrex_db.close()
-        '''
-        except:
-            print('')
-            print('Reconnecting')
-            self.bittrex_db.close()
-            time.sleep(self.bittrex_refresh_rate)
-            self.get_bittrex_tape_single_round()
-        '''
-            
-        '''    
-        finally:
-            time.sleep(0.1)
-            ('Reconnecting to bittrex feed...')
-            self.get_bittrex_tape()
-        '''
 
 
 
     def get_binance_tape(self):
         try:
-            while True:
-                time.sleep(self.binance_refresh_rate)
-                all_coin_data = broker.get_data_for_all_coins('binance')
-                for i in all_coin_data:
-                    if coin_id is not -1:
-                        coin_table = i['symbol']
-                        bid = i['bidPrice']
-                        volume = i['volume']
-                        # print('    Getting binance data for: ', coin_table, '  ', end='\r')
-                        print('    Getting binance data for: ', coin_table)
-                        self.create_binance_table(coin_table)
-                        self.write_to_binance_database(coin_table, bid, volume)
-        except KeyboardInterrupt:
+            time.sleep(self.binance_refresh_rate)
+            all_coin_data = broker.get_data_for_all_coins('binance')
+            for i in all_coin_data:
+                if i['lastId'] is not -1:
+                    coin_table = i['symbol']
+                    bid = i['bidPrice']
+                    volume = i['volume']
+                    print('    Getting binance data for: ', coin_table, '  ', end='\r')
+                    self.create_binance_table(coin_table)
+                    self.write_to_binance_database(coin_table, bid, volume)
+        except:
             self.binance_db.close()
-        '''    
-        finally:
-            self.get_binance_tape()
-        '''    
 
 
 
@@ -163,9 +115,9 @@ class Feed():
             rows = self.bittrex_cursor.fetchall()
             result = rows[len(rows)-records if records else 0:]
             return result
-            
-            
-    
+
+
+
     def get_last_x_record(self, broker, coin, column, record):
         self.bittrex_db = sqlite3.connect('bittrex_tape.db')
         self.bittrex_cursor = self.bittrex_db.cursor()
@@ -186,13 +138,13 @@ class Feed():
             print('Need more data points in database. Rerun without strategy.')
 
 
+
     def run(self):
         # self.initialize_databases('bittrex_tape.db', 'binance_tape.db')
         bittrex_feed_process = Process(target = self.get_bittrex_tape)
         bittrex_feed_process.start()
         # binance_feed_process = Process(target = self.get_binance_tape)
         # binance_feed_process.start()
-    
 
 
 
@@ -236,10 +188,6 @@ class Feed():
             except:
                 continue
 '''
-
-
-
-
 
 
 
