@@ -1,18 +1,49 @@
 #!/usr/bin/python3
 
+
+'''
+start program like this:
+
+python main.py live
+python main.py demo
+python main.py feed 
+
+'''
+
+
 import log
 import argparse
 import feed
 import strategy
 import broker
 
+
+
+# objects 
 feed = feed.Feed()
 strategy = strategy.Strategy()
 
 
+# ui
+parser = argparse.ArgumentParser()
+parser.add_argument("echo", help="live, demo, feed") 
+args = parser.parse_args() # print (args.echo) # example of how to grab echo
+
+
 
 def run():
+    
     log.general('Starting\n')
+    
+    if args.echo == 'live':
+    print('Live mode selected')
+    
+    if args.echo == 'demo':
+    print('Demo mode selected')
+
+    if args.echo == 'feed':
+    print('Feed mode selected')
+    
     while True:
         try:
             log.general('Downloading feed data\n')
@@ -34,10 +65,7 @@ run()
 
 
 
-'''
-all_coin_data = broker.get_data_for_all_coins('bittrex')
-print(all_coin_data)
-'''
+
 
 '''
 import sys
