@@ -45,6 +45,12 @@ def run():
     if args.echo == 'feed':
     print('Feed mode selected')
     
+    if args.echo == 'test':
+        print('Test mode selected')
+        print('Testing bitx tape')
+        feed.get_bitx_tape()
+    
+    '''
     while True:
         try:
             log.general('Downloading feed data\n')
@@ -59,6 +65,7 @@ def run():
             strategy.seek()
         except KeyboardInterrupt:
             pass
+            '''
 
 
 run()
