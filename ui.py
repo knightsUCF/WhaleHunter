@@ -1,59 +1,17 @@
+import argparse
 
 
+parser = argparse.ArgumentParser()
+parser.add_argument("echo", help="live, demo, feed")
+args = parser.parse_args()
 
-# option one
-'feed'
-'demo'
-'live'
+# print (args.echo) # example of how to grab echo
 
-# command line input: ui.py
+if args.echo == 'live':
+    print('Live mode selected')
 
+if args.echo == 'demo':
+    print('Demo mode selected')
 
-# type this for reference (can you only just type in -h or --help?
-# ui.py -h --help
-# ui.py --mode=LIVE
-# ui.py --mode=DEMO
-# ui.py --mode=FEED
-
-
-
-
-
-"""Example of program with many options using docopt.
-Usage:
-  options_example.py [-hvqrf NAME] [--exclude=PATTERNS]
-                     [--select=ERRORS | --ignore=ERRORS] [--show-source]
-                     [--statistics] [--count] [--benchmark] PATH...
-  options_example.py (--doctest | --testsuite=DIR)
-  options_example.py --version
-Arguments:
-  PATH  destination path
-Options:
-  -h --help            show this help message and exit
-  --version            show version and exit
-  -v --verbose         print status messages
-  -q --quiet           report only file names
-  -r --repeat          show all occurrences of the same error
-  --exclude=PATTERNS   exclude files or directories which match these comma
-                       separated patterns [default: .svn,CVS,.bzr,.hg,.git]
-  -f NAME --file=NAME  when parsing directories, only check filenames matching
-                       these comma separated patterns [default: *.py]
-  --select=ERRORS      select errors and warnings (e.g. E,W6)
-  --ignore=ERRORS      skip errors and warnings (e.g. E4,W)
-  --show-source        show source code for each error
-  --statistics         count errors and warnings
-  --count              print total number of errors and warnings to standard
-                       error and set exit code to 1 if total is not null
-  --benchmark          measure processing speed
-  --testsuite=DIR      run regression tests from dir
-  --doctest            run doctest on myself
-"""
-from docopt import docopt
-
-
-if __name__ == '__main__':
-    arguments = docopt(__doc__, version='1.0.0rc2')
-    print(arguments)
-
-
-
+if args.echo == 'feed':
+    print('Feed mode selected')
