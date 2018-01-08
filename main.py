@@ -11,22 +11,24 @@ strategy = strategy.Strategy()
 
 
 def run():
-    log.general('\nIntializing...\n')
+    log.general('Initializing...\n')
     while True:
         try:
-            log.general('\n>>> Getting feed data >>>\n')
+            log.general('Downloading feed data\n')
             feed.get_bittrex_tape()
-            # feed.get_binance_tape() # test later after ban is lifted
-            print('Seeking trade opportunity...')
+            feed.get_binance_tape()
+            feed.get_bitx_tape()
+            feed.get_bitgrail_tape()
+            feed.get_kucoin_tape()
+            feed.get_mercatox()
+            feed.get_bitflip()
+            print('Seeking trade opportunity\n')
             strategy.seek()
         except KeyboardInterrupt:
             pass
 
 
 run()
-
-
-
 
 
 
