@@ -4,6 +4,8 @@ import log
 import user
 import json
 import numpy
+
+# brokers
 import bittrex
 from brokers import bitx
 from brokers import bitgrail
