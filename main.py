@@ -2,7 +2,7 @@
 
 
 '''
-start program like this:
+Run modes:
 
 python main.py live
 python main.py demo
