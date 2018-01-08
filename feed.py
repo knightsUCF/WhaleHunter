@@ -308,7 +308,7 @@ class Feed():
            self.mercatox_db.close()
 
 
-
+'''
     def get_last_x_records(self, broker, coin, column, records=None):
         if broker == 'bittrex':
             query = "SELECT {0} from {1};".format(column, coin)
@@ -316,7 +316,7 @@ class Feed():
             rows = self.bittrex_cursor.fetchall()
             result = rows[len(rows)-records if records else 0:]
             return result
-
+'''
 
 
     def get_last_x_record(self, broker, coin, column, record):
