@@ -14,7 +14,6 @@ from brokers import mercatox
 from brokers import bitflip
 from binance.client import Client
 
-
 bittrex = bittrex.Bittrex(user.bittrex_public_key, user.bittrex_private_key)
 binance = Client(user.binance_public_key, user.binance_private_key)
 
