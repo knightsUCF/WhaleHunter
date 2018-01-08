@@ -8,15 +8,6 @@
 
 - create a method to detect the timing interval of querries in the database. Based on this timing interval calculate the appropriate lookback ratio.
 
-- add more brokers
-
 - consider fastest transfer times (litecoin / raiblocks)
 
-- command line interface with the format:
-
-ui mode_1 option_1 option_2 [--pass_parameters = variable]
-
-ui mode_2 option_1 [--pass_parameters_2 = 5000] [--pass_parameters = variable]
-
-ui mode_3 (-h | --help | --version)
 
