@@ -9,7 +9,7 @@
 
 - command line interface with the format:
 <h4>
-ui mode_1 <option> <option> [--pass_parameters=<variable>]
+ui mode_1 <option> <option> [--pass_parameters = <variable>]
 
 
 or:
