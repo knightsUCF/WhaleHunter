@@ -6,7 +6,17 @@
 'demo'
 'live'
 
-# command line input: ui.py 
+# command line input: ui.py
+
+
+# type this for reference (can you only just type in -h or --help?
+# ui.py -h --help
+# ui.py --mode=LIVE
+# ui.py --mode=DEMO
+# ui.py --mode=FEED
+
+
+
 
 
 """Example of program with many options using docopt.
