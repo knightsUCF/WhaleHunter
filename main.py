@@ -4,9 +4,9 @@
 '''
 Run modes:
 
-python main.py live
-python main.py demo
-python main.py feed 
+python3 main.py live
+python3 main.py demo
+python3 main.py feed 
 
 '''
 
