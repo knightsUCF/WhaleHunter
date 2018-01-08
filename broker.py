@@ -12,6 +12,7 @@ from brokers import mercatox
 from brokers import bitflip
 from binance.client import Client
 
+
 bittrex = bittrex.Bittrex(user.bittrex_public_key, user.bittrex_private_key)
 binance = Client(user.binance_public_key, user.binance_private_key)
 
@@ -41,8 +42,6 @@ def get_data_for_all_coins(broker):
 
 
 
-
-
 def get_bids():
     prices = bittrex.get_market_summaries()
     response = prices['success']
@@ -51,9 +50,6 @@ def get_bids():
         log.error(error_code)
     results = prices['result']
     return results
-
-
-
 
 
 def get_markets_summary():
