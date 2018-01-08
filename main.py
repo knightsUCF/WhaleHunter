@@ -11,7 +11,7 @@ strategy = strategy.Strategy()
 
 
 def run():
-    log.general('Initializing...\n')
+    log.general('Starting\n')
     while True:
         try:
             log.general('Downloading feed data\n')
