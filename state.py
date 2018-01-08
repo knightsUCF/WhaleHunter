@@ -35,7 +35,7 @@ class State():
         if (not self.trades):
             return
         if (id in self.trades):
-            del self.atWar[declaredByID]
+            del self.trades[id]
 
 
 
