@@ -20,8 +20,8 @@ def run():
             feed.get_bitx_tape()
             feed.get_bitgrail_tape()
             feed.get_kucoin_tape()
-            feed.get_mercatox()
-            feed.get_bitflip()
+            feed.get_mercatox_tape()
+            feed.get_bitflip_tape()
             print('Seeking trade opportunity\n')
             strategy.seek()
         except KeyboardInterrupt:
