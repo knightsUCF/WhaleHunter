@@ -5,13 +5,15 @@ import user
 import json
 import numpy
 import bittrex
+from brokers import bitx
+from brokers import bitgrail
+from brokers import kucoin
+from brokers import mercatox
+from brokers import bitflip
 from binance.client import Client
 
 bittrex = bittrex.Bittrex(user.bittrex_public_key, user.bittrex_private_key)
 binance = Client(user.binance_public_key, user.binance_private_key)
-
-
-
 
 
 
@@ -26,6 +28,17 @@ def get_data_for_all_coins(broker):
         return results
     if broker == 'binance':
         return binance.get_ticker()
+    if broker == 'bitx':
+        pass
+    if broker == 'bitgrail':
+        pass
+    if broker == 'kucoin':
+        pass
+    if broker == 'mercatox':
+        pass
+    if broker == 'bitflip':
+        pass
+
 
 
 
