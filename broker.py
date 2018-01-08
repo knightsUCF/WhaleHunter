@@ -20,25 +20,25 @@ binance = Client(user.binance_public_key, user.binance_private_key)
 
 
 def get_data_for_all_coins(broker):
-    if broker == 'bittrex':
+    if broker is 'bittrex':
         prices = bittrex.get_market_summaries()
         response = prices['success']
-        if response == False:
+        if response is False:
             error_code = 'E1: No response from broker server'
             log.error(error_code)
         results = prices['result']
         return results
-    if broker == 'binance':
+    if broker is 'binance':
         return binance.get_ticker()
-    if broker == 'bitx':
+    if broker is 'bitx':
         pass
-    if broker == 'bitgrail':
+    if broker is 'bitgrail':
         pass
-    if broker == 'kucoin':
+    if broker is 'kucoin':
         pass
-    if broker == 'mercatox':
+    if broker is 'mercatox':
         pass
-    if broker == 'bitflip':
+    if broker is 'bitflip':
         pass
 
 
@@ -46,7 +46,7 @@ def get_data_for_all_coins(broker):
 def get_bids():
     prices = bittrex.get_market_summaries()
     response = prices['success']
-    if response == False:
+    if response is False:
         error_code = 'E1: No response from broker server'
         log.error(error_code)
     results = prices['result']
@@ -73,9 +73,9 @@ def quote(coin):
     bittrex_string = 'BTC-' + coin
     data = bittrex.get_ticker(bittrex_string)
     response = data['success']
-    if response == False:
+    if response is False:
         error_code = 'E1: No response from broker server.'
         log.error(error_code)
-    if response == True:
+    if response is True:
         quote = float(data['result']['Bid'])
         return quote
