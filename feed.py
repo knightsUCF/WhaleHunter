@@ -60,7 +60,6 @@ class Feed():
             self.mercatox_cursor = self.mercatox_db.cursor()
             self.bitflip_cursor = self.bitflip_db.cursor()
 
-
         except sqlite3.Error as e:
             log.error('E2: No database(s) connection')
 
