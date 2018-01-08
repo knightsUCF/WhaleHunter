@@ -4,10 +4,10 @@
 '''
 Run modes:
 
-python3 main.py live
-python3 main.py demo
-python3 main.py feed
-python3 main.py test
+python3 wh.py live
+python3 wh.py demo
+python3 wh.py feed
+python3 wh.py test
 
 '''
 
