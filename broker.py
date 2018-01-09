@@ -7,11 +7,11 @@ import numpy
 
 # brokers
 import bittrex
-from brokers import bitx
-from brokers import bitgrail
-from brokers import kucoin
+# from brokers import luno
+import bitgrail
+import kucoin
 from brokers import mercatox
-from brokers import bitflip
+import bitflip
 from binance.client import Client
 
 bittrex = bittrex.Bittrex(user.bittrex_public_key, user.bittrex_private_key)
@@ -30,16 +30,16 @@ def get_data_for_all_coins(broker):
         return results
     if broker is 'binance':
         return binance.get_ticker()
-    if broker is 'bitx':
+    if broker is 'luno':
         pass
     if broker is 'bitgrail':
-        pass
+        return bitgrail.get_tape()
     if broker is 'kucoin':
-        pass
+        return kucoin.get_tape()
     if broker is 'mercatox':
         pass
     if broker is 'bitflip':
-        pass
+        return bitflip.get_tape()
 
 
 
