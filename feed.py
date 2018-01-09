@@ -293,7 +293,7 @@ class Feed():
 
 
 
-   def get_bitflip_tape(self):
+    def get_bitflip_tape(self):
        try:
            time.sleep(self.bitflip_refresh_rate)
            all_coin_data = broker.get_data_for_all_coins('bitflip')
@@ -315,6 +315,7 @@ class Feed():
             rows = self.bittrex_cursor.fetchall()
             result = rows[len(rows)-records if records else 0:]
             return result
+'''
 '''
 
 
@@ -446,15 +447,13 @@ class Feed():
         except:
             print('Bitflip parsing error, or, need more data points in database. Rerun without strategy.')
 
-
+'''
 
 
 
 
 
 '''
-
-
     def run(self):
         # self.initialize_databases('bittrex_tape.db', 'binance_tape.db')
         bittrex_feed_process = Process(target = self.get_bittrex_tape)
