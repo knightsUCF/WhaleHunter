@@ -19,7 +19,7 @@ class Feed():
     def __init__(self):
         self.initialize_databases('bittrex_tape.db',
                                   'binance_tape.db',
-                                  'bitx_tape.db',
+                                  'luno_tape.db',
                                   'bitgrail_tape.db',
                                   'kucoin_tape.db',
                                   'mercatox_tape.db',
@@ -27,7 +27,7 @@ class Feed():
 
         self.bittrex_refresh_rate = 1
         self.binance_refresh_rate = (random.randint(3,10)) # very picky broker
-        self.bitx_refresh_rate = 1
+        self.luno_refresh_rate = 1
         self.bitgrail_refresh_rate = 1
         self.kucoin_refresh_rate = 1
         self.mercatox_refresh_rate = 1
@@ -38,7 +38,7 @@ class Feed():
     def initialize_databases(self,
                              bittrex,
                              binance,
-                             bitx,
+                             luno,
                              bitgrail,
                              kucoin,
                              mercatox,
@@ -46,7 +46,7 @@ class Feed():
         try:
             self.bittrex_db = sqlite3.connect(bittrex)
             self.binance_db = sqlite3.connect(binance)
-            self.bitx_db = sqlite3.connect(bitx)
+            self.luno_db = sqlite3.connect(luno)
             self.bitgrail_db = sqlite3.connect(bitgrail)
             self.kucoin_db = sqlite3.connect(kucoin)
             self.mercatox_db = sqlite3.connect(mercatox)
@@ -54,7 +54,7 @@ class Feed():
 
             self.bittrex_cursor = self.bittrex_db.cursor()
             self.binance_cursor = self.binance_db.cursor()
-            self.bitx_cursor = self.bitx_db.cursor()
+            self.luno_cursor = self.luno_db.cursor()
             self.bitgrail_cursor = self.bitgrail_db.cursor()
             self.kucoin_cursor = self.kucoin_db.cursor()
             self.mercatox_cursor = self.mercatox_db.cursor()
@@ -81,11 +81,11 @@ class Feed():
 
 
 
-    def create_bitx_table(self, coin):
-        self.bitx_cursor.execute('''
+    def create_luno_table(self, coin):
+        self.luno_cursor.execute('''
             CREATE TABLE IF NOT EXISTS {0}(id INTEGER PRIMARY KEY AUTOINCREMENT, time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
             price REAL, volume REAL)'''.format(coin))
-        self.bitx_db.commit()
+        self.luno_db.commit()
 
 
 
@@ -143,11 +143,11 @@ class Feed():
 
 
 
-    def write_to_bitx_database(self, coin_table, price, volume):
-        self.create_bitx_table(coin_table)
+    def write_to_luno_database(self, coin_table, price, volume):
+        self.create_luno_table(coin_table)
         try:
-            with self.bitx_db:
-                self.bitx_db.execute('''INSERT INTO {0}(price, volume)
+            with self.luno_db:
+                self.luno_db.execute('''INSERT INTO {0}(price, volume)
                           VALUES({1},{2})'''.format(coin_table, price, volume))
         except sqlite3.IntegrityError:
             log.error('E3: Record already exists')
@@ -233,18 +233,18 @@ class Feed():
 
 
 
-    def get_bitx_tape(self):
+    def get_luno_tape(self):
         try:
-            time.sleep(self.bitx_refresh_rate)
-            all_coin_data = broker.get_data_for_all_coins('bitx')
+            time.sleep(self.luno_refresh_rate)
+            all_coin_data = broker.get_data_for_all_coins('luno')
             for i in all_coin_data:
                 # figure out how to parse feed
-                print('    Getting bitx data for: ', coin_table, '  ', end='\r')
-                self.create_bitx_table(coin_table)
-                self.write_to_bitx_database(coin_table, bid, volume)
+                print('    Getting luno data for: ', coin_table, '  ', end='\r')
+                self.create_luno_table(coin_table)
+                self.write_to_luno_database(coin_table, bid, volume)
         except:
-            print('Bitx feed off')
-            self.bitx_db.close()
+            print('Luno feed off')
+            self.luno_db.close()
 
 
 
