@@ -30,7 +30,7 @@ class API():
 
 
 
-    def readable_json(self, response): # pass get()
+    def readable(self, response): # pass get()
         pprint.pprint(response)
 
 
