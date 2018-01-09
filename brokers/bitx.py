@@ -1,1 +1,0 @@
-print('bitx successfully imported')
