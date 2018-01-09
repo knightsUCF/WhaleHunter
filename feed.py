@@ -187,12 +187,12 @@ class Feed():
 
 
 
-    def write_to_bitflip_database(self, coin_table, price, volume):
+    def write_to_bitflip_database(self, coin_table, price):
         self.create_bitflip_table(coin_table)
         try:
             with self.bitflip_db:
-                self.bitflip_db.execute('''INSERT INTO {0}(price, volume)
-                          VALUES({1},{2})'''.format(coin_table, price, volume))
+                self.bitflip_db.execute('''INSERT INTO {0}(price)
+                          VALUES({1})'''.format(coin_table, price))
         except sqlite3.IntegrityError:
             log.error('E3: Record already exists')
 
@@ -224,7 +224,7 @@ class Feed():
                     coin_table = i['symbol']
                     bid = i['bidPrice']
                     volume = i['volume']
-                    print('    Getting binance data for: ', coin_table, '  ', end='\r')
+                    print('Getting binance data for: ', coin_table, '  ', end='\r')
                     self.create_binance_table(coin_table)
                     self.write_to_binance_database(coin_table, bid, volume)
         except:
@@ -253,8 +253,10 @@ class Feed():
             time.sleep(self.bitgrail_refresh_rate)
             all_coin_data = broker.get_data_for_all_coins('bitgrail')
             for i in all_coin_data:
-                # figure out how to parse feed
-                print('    Getting bitgrail data for: ', coin_table, '  ', end='\r')
+                coin_table = re.sub('/','',i['market'])
+                print('Getting bitgrail data for: ', coin_table, '  ', end='\r')
+                bid = i['bid']
+                volume = i['volume']
                 self.create_bitgrail_table(coin_table)
                 self.write_to_bitgrail_database(coin_table, bid, volume)
         except:
@@ -268,13 +270,16 @@ class Feed():
             time.sleep(self.kucoin_refresh_rate)
             all_coin_data = broker.get_data_for_all_coins('kucoin')
             for i in all_coin_data:
-                # figure out how to parse feed
-                print('    Getting kucoin data for: ', coin_table, '  ', end='\r')
+                coin_table = re.sub('-','',i['symbol'])
+                print('Getting kucoin data for: ', coin_table, '  ', end='\r')
+                bid = i['buy']
+                volume = i['vol']
                 self.create_kucoin_table(coin_table)
                 self.write_to_kucoin_database(coin_table, bid, volume)
         except:
             print('Kucoin feed off')
             self.kucoin_db.close()
+
 
 
 
@@ -298,13 +303,18 @@ class Feed():
            time.sleep(self.bitflip_refresh_rate)
            all_coin_data = broker.get_data_for_all_coins('bitflip')
            for i in all_coin_data:
-               # figure out how to parse feed
-               print('    Getting bitflip data for: ', coin_table, '  ', end='\r')
+               coin_table = re.sub(':','',i['pair'])
+               bid = i['buy']
+               print('Getting bitflip data for: ', coin_table, '  ', end='\r')
                self.create_bitflip_table(coin_table)
-               self.write_to_bitflip_database(coin_table, bid, volume)
+               self.write_to_bitflip_database(coin_table, bid)
        except:
            print('Bitflip feed off')
-           self.mercatox_db.close()
+           self.bitflip_db.close()
+
+
+
+
 
 
 '''
