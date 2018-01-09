@@ -21,6 +21,17 @@ def menu():
         print('Live mode selected')
     if args.echo == 'demo':
         print('Demo mode selected')
+        while True:
+            try:
+                feed.get_bittrex_tape()
+                feed.get_binance_tape()
+                feed.get_bitflip_tape()
+                feed.get_bitgrail_tape()
+                feed.get_kucoin_tape()
+                # feed.get_mercatox_tape() api coming soon
+                # feed.get_luno_tape() api coming soon
+            except KeyboardInterrupt:
+                pass
     if args.echo == 'feed':
         print('Feed mode selected')
         while True:
@@ -31,13 +42,12 @@ def menu():
                 feed.get_bitgrail_tape()
                 feed.get_kucoin_tape()
                 # feed.get_mercatox_tape() api coming soon
-                # feed.get_luno_tape() api coming soon 
+                # feed.get_luno_tape() api coming soon
             except KeyboardInterrupt:
                 pass
     if args.echo == 'test':
         print('Test mode selected')
-        print('Testing bitx tape')
-        feed.get_bitx_tape()
+
     '''
     while True:
         try:
