@@ -1,17 +1,5 @@
 #!/usr/bin/python3
 
-
-'''
-Run modes:
-
-python3 wh.py live
-python3 wh.py demo
-python3 wh.py feed
-python3 wh.py test
-
-'''
-
-
 import log
 import argparse
 import feed
@@ -19,37 +7,34 @@ import strategy
 import broker
 
 
-
-# objects 
 feed = feed.Feed()
 strategy = strategy.Strategy()
 
 
-# ui
-parser = argparse.ArgumentParser()
-parser.add_argument("echo", help="live, demo, feed") 
-args = parser.parse_args() # print (args.echo) # example of how to grab echo
 
-
-
-def run():
-    
+def menu():
     log.general('Starting\n')
-    
+    parser = argparse.ArgumentParser()
+    parser.add_argument("echo", help="live, demo, feed")
+    args = parser.parse_args() # print (args.echo) # example of how to grab echo
     if args.echo == 'live':
-    print('Live mode selected')
-    
+        print('Live mode selected')
     if args.echo == 'demo':
-    print('Demo mode selected')
-
+        print('Demo mode selected')
     if args.echo == 'feed':
-    print('Feed mode selected')
-    
+        print('Feed mode selected')
+        while True:
+            try:
+                log.general('Downloading feed data\n')
+                # feed.get_bittrex_tape()
+                # feed.get_binance_tape()
+                feed.get_bitx_tape()
+            except KeyboardInterrupt:
+                pass
     if args.echo == 'test':
         print('Test mode selected')
         print('Testing bitx tape')
         feed.get_bitx_tape()
-    
     '''
     while True:
         try:
@@ -66,6 +51,11 @@ def run():
         except KeyboardInterrupt:
             pass
             '''
+
+
+def run():
+    menu()
+
 
 
 run()
