@@ -282,7 +282,6 @@ class Feed():
 
 
 
-
     def get_mercatox_tape(self):
         try:
             time.sleep(self.mercatox_refresh_rate)
@@ -311,6 +310,136 @@ class Feed():
        except:
            print('Bitflip feed off')
            self.bitflip_db.close()
+
+
+
+    def get_last_record(self, broker, coin, column, record):
+        # old:
+        # self.bittrex_db = sqlite3.connect('bittrex_tape.db')
+        # self.bittrex_cursor = self.bittrex_db.cursor()
+
+        self.bittrex_db = sqlite3.connect('bittrex_tape.db')
+        self.binance_db = sqlite3.connect('binance_tape.db')
+        self.bitx_db = sqlite3.connect('luno_tape.db')
+        self.bitgrail_db = sqlite3.connect('bitgrail_tape.db')
+        self.kucoin_db = sqlite3.connect('kucoin_tape.db')
+        self.mercatox_db = sqlite3.connect('mercatox_tape.db')
+        self.bitflip_db = sqlite3.connect('bitflip_tape.db')
+
+        self.bittrex_cursor = self.bittrex_db.cursor()
+        self.binance_cursor = self.binance_db.cursor()
+        self.bitx_cursor = self.bitx_db.cursor()
+        self.bitgrail_cursor = self.bitgrail_db.cursor()
+        self.kucoin_cursor = self.kucoin_db.cursor()
+        self.mercatox_cursor = self.mercatox_db.cursor()
+        self.bitflip_cursor = self.bitflip_db.cursor()
+
+        records = None
+
+        try:
+            if broker == 'bittrex':
+                query = "SELECT {0} from {1} ORDER BY ID DESC;".format(column, coin)
+                self.bittrex_cursor.execute(query)
+                rows = self.bittrex_cursor.fetchall()
+                self.bittrex_db.close()
+                result = rows[len(rows)-records if records else 0:]
+                result = str(result[record])
+                result = re.sub(',', '', result)
+                result = result.replace('(', '')
+                result = result.replace(')', '')
+                return float(result)
+        except:
+            print('Bittrex parsing db error, or, need more data points in database. Rerun without strategy.')
+
+        try:
+            if broker == 'binance':
+                query = "SELECT {0} from {1} ORDER BY ID DESC;".format(column, coin)
+                self.binance_cursor.execute(query)
+                rows = self.binance_cursor.fetchall()
+                self.binance_db.close()
+                result = rows[len(rows)-records if records else 0:]
+                result = str(result[record])
+                result = re.sub(',', '', result)
+                result = result.replace('(', '')
+                result = result.replace(')', '')
+                return float(result)
+        except:
+            print('Binance parsing db error, or, need more data points in database. Rerun without strategy.')
+
+        try:
+            if broker == 'bitx':
+                query = "SELECT {0} from {1} ORDER BY ID DESC;".format(column, coin)
+                self.bitx_cursor.execute(query)
+                rows = self.bitx_cursor.fetchall()
+                self.bitx_db.close()
+                result = rows[len(rows)-records if records else 0:]
+                result = str(result[record])
+                result = re.sub(',', '', result)
+                result = result.replace('(', '')
+                result = result.replace(')', '')
+                return float(result)
+        except:
+            print('Bitx parsing db error, or, need more data points in database. Rerun without strategy.')
+
+        try:
+            if broker == 'bitgrail':
+                query = "SELECT {0} from {1} ORDER BY ID DESC;".format(column, coin)
+                self.bitgrail_cursor.execute(query)
+                rows = self.bitgrail_cursor.fetchall()
+                self.bitgrail_db.close()
+                result = rows[len(rows)-records if records else 0:]
+                result = str(result[record])
+                result = re.sub(',', '', result)
+                result = result.replace('(', '')
+                result = result.replace(')', '')
+                return float(result)
+        except:
+            print('Bitgrail parsing error, or, need more data points in database. Rerun without strategy.')
+
+        try:
+            if broker == 'kucoin':
+                query = "SELECT {0} from {1} ORDER BY ID DESC;".format(column, coin)
+                self.kucoin_cursor.execute(query)
+                rows = self.kucoin_cursor.fetchall()
+                self.kucoin_db.close()
+                result = rows[len(rows)-records if records else 0:]
+                result = str(result[record])
+                result = re.sub(',', '', result)
+                result = result.replace('(', '')
+                result = result.replace(')', '')
+                return float(result)
+        except:
+            print('Kucoin parsing error, or, need more data points in database. Rerun without strategy.')
+
+        try:
+            if broker == 'mercatox':
+                query = "SELECT {0} from {1} ORDER BY ID DESC;".format(column, coin)
+                self.mercatox_cursor.execute(query)
+                rows = self.mercatox_cursor.fetchall()
+                self.mercatox_db.close()
+                result = rows[len(rows)-records if records else 0:]
+                result = str(result[record])
+                result = re.sub(',', '', result)
+                result = result.replace('(', '')
+                result = result.replace(')', '')
+                return float(result)
+        except:
+            print('Mercatox parsing error, or, need more data points in database. Rerun without strategy.')
+
+        try:
+            if broker == 'bitflip':
+                query = "SELECT {0} from {1} ORDER BY ID DESC;".format(column, coin)
+                self.bitflip_cursor.execute(query)
+                rows = self.bitflip_cursor.fetchall()
+                self.bitflip_db.close()
+                result = rows[len(rows)-records if records else 0:]
+                result = str(result[record])
+                result = re.sub(',', '', result)
+                result = result.replace('(', '')
+                result = result.replace(')', '')
+                return float(result)
+        except:
+            print('Bitflip parsing error, or, need more data points in database. Rerun without strategy.')
 
 
 
