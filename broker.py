@@ -1,21 +1,32 @@
 #!/usr/bin/python3
 
 import log
+import api
 import user
 import json
 import numpy
 
 # brokers
-import bittrex
 # from brokers import luno
 import bitgrail
 import kucoin
 from brokers import mercatox
 import bitflip
-from binance.client import Client
 
+
+api = api.API()
+
+import bittrex
 bittrex = bittrex.Bittrex(user.bittrex_public_key, user.bittrex_private_key)
+
+from binance.client import Client
 binance = Client(user.binance_public_key, user.binance_private_key)
+
+from kucoin.client import Client
+kucoin = Client(user.kucoin_public_key, user.kucoin_private_key)
+
+
+
 
 
 
@@ -35,7 +46,8 @@ def get_data_for_all_coins(broker):
     if broker is 'bitgrail':
         return bitgrail.get_tape()
     if broker is 'kucoin':
-        return kucoin.get_tape()
+        response = api.get('https://api.kucoin.com/v1/market/open/symbols')
+        return response['data']
     if broker is 'mercatox':
         pass
     if broker is 'bitflip':
@@ -79,3 +91,48 @@ def quote(coin):
     if response is True:
         quote = float(data['result']['Bid'])
         return quote
+        
+        
+
+def balances(exchange):
+    if exchange == 'binance':
+        balances = binance.get_account()
+        pretty = api.readable(balances)
+        print(' Binance balances: ', pretty)
+        return balances
+    if exchange == 'kucoin':
+        balances = kucoin.get_all_balances()
+        pretty = api.readable(kucoin.get_all_balances())
+        print('Kucoin balances: ', pretty)
+        return balances
+
+
+
+def address(exchange, pair):
+    if exchange == 'binance':
+        print('Getting deposit address at ', exchange, ' for ', pair)
+        address = binance.get_deposit_address(pair)
+        return address
+    if exchange == 'kucoin':
+        print('Getting deposit address at ', exchange, 'for', pair)
+        address = kucoin.get_deposit_address(pair)
+        return address
+
+
+
+def buy(exchange, pair, amount, kucoin_pending_order_price):
+    if exchange == 'binance': # probably 'BTCX' no special characters format
+        response = binance.order_market_buy(pair, amount)
+        print('Buy order API response: ', response)
+    if exchange == 'kucoin': # 'KCS-BTC' format
+        response = kucoin.create_buy_order(pair, kucoin_pending_order_price, amount)
+
+
+
+def withdraw(exchange, coin, amount, address):
+    valid_milliseconds_window = '' # for binance
+    if exchange == 'binance':
+        binance.withdraw(coin, address, amount, recvWindow = valid_milliseconds_window)
+    if exchange == 'kucoin':
+        kucoin.create_withdrawal(coin, amount, address)
+
