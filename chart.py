@@ -1,14 +1,22 @@
+import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
-from bkcharts import Line, output_file, show
+import matplotlib.pyplot as plt
 
-# (dict, OrderedDict, lists, arrays and DataFrames are valid inputs)
-xyvalues = np.array([[2, 3, 7, 5, 26], [12, 33, 47, 15, 126], [22, 43, 10, 25, 26]])
 
-line = Line(xyvalues, title="line", legend="top_left", ylabel='Languages')
+class Chart():
+    
 
-output_file('line.html')
-show(line)
-
+    def graph(self, title, x_label, x = [1, 2, 3, 4], y = ['a', 'b', 'c', 'd']):
+        font = {'family' : 'Arial',
+        'weight' : 'bold',
+        'size'   : 4}
+        plt.rc('font', **font)
+        y_pos = np.arange(len(x))
+        plt.barh(y_pos, x, align = 'center', alpha = 0.4)
+        plt.yticks(y_pos, y)
+        plt.xlabel(x_label)
+        plt.title(title)
+        plt.show()
 
 
 
