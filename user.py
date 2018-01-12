@@ -6,6 +6,9 @@ bittrex_private_key = "a096351c202447bfab66f0609353f782"
 binance_public_key = "1gg6se9Izi0MGMW3AkfMxTag1vP2z6FhqVuWXnQd1DyQm9bLykJYmkY1cEQ0jq2g"
 binance_private_key = "u5voozvtakpycxMFbT9YFXFGbmyn9lD9aRIUOkOUzI7BYDzVQTKQ7Izhi5mJpOiw"
 
+kucoin_public_key = '5a547f17000ee2662d7a1a08'
+kucoin_private_key = '0871ac94-3de9-4f7b-92b6-a67815134996'
+
 # run mode
 
 mode = 'demo' # demo or live
