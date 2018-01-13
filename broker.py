@@ -92,13 +92,13 @@ def quote(coin):
         quote = float(data['result']['Bid'])
         return quote
         
-        
+
 
 def balances(exchange):
     if exchange == 'binance':
         balances = binance.get_account()
-        pretty = api.readable(balances)
-        print(' Binance balances: ', pretty)
+        # pretty = api.readable(balances)
+        # print(' Binance balances: ', pretty)
         return balances
     if exchange == 'kucoin':
         balances = kucoin.get_all_balances()
@@ -106,6 +106,24 @@ def balances(exchange):
         print('Kucoin balances: ', pretty)
         return balances
 
+
+
+def balance(exchange, coin):
+    balance = 0
+    balances = 0
+    if exchange == 'binance':
+        balances = binance.get_account()
+        for i in balances['balances']:
+            if i['asset'] == coin:
+                balance = i['free']
+                return balance
+    if exchange == 'kucoin':
+        balances = kucoin.get_all_balances()
+        for i in balances:
+            if i['coinType'] == coin:
+                balance = i['balance']
+                return balance
+    
 
 
 def address(exchange, pair):
@@ -124,8 +142,10 @@ def buy(exchange, pair, amount, kucoin_pending_order_price):
     if exchange == 'binance': # probably 'BTCX' no special characters format
         response = binance.order_market_buy(pair, amount)
         print('Buy order API response: ', response)
+        return response
     if exchange == 'kucoin': # 'KCS-BTC' format
         response = kucoin.create_buy_order(pair, kucoin_pending_order_price, amount)
+        return response
 
 
 
@@ -135,4 +155,3 @@ def withdraw(exchange, coin, amount, address):
         binance.withdraw(coin, address, amount, recvWindow = valid_milliseconds_window)
     if exchange == 'kucoin':
         kucoin.create_withdrawal(coin, amount, address)
-
