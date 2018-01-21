@@ -155,3 +155,5 @@ def withdraw(exchange, coin, amount, address):
         binance.withdraw(coin, address, amount, recvWindow = valid_milliseconds_window)
     if exchange == 'kucoin':
         kucoin.create_withdrawal(coin, amount, address)
+
+        
