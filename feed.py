@@ -25,7 +25,7 @@ class Feed():
                                   'mercatox_tape.db',
                                   'bitflip_tape.db')
 
-        self.bittrex_refresh_rate = 1
+        self.bittrex_refresh_rate = 60
         self.binance_refresh_rate = (random.randint(3,10)) # very picky broker
         self.luno_refresh_rate = 1
         self.bitgrail_refresh_rate = 1
