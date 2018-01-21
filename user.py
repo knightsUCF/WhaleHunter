@@ -12,7 +12,8 @@ kucoin_private_key = '0871ac94-3de9-4f7b-92b6-a67815134996'
 # run mode
 
 mode = 'demo' # demo or live
-alerts = 'off' # off or on 
+alerts = 'off' # off or on
+run_logs = False
 
 
 
@@ -42,10 +43,10 @@ strategy_4 = False
 
 # strategy 1 settings:
 
-entry_lookback = 1 # ten of time series data "time units" (candlebuilding)
+entry_lookback = 10 # ten of time series data "time units" (candlebuilding), this depends on how much time there is between units
 exit_lookback = 1
 volume_spike_magnitude_coefficient = 1.0 # 1.0 is 100%, unchanged
-price_spike_magnitude_coefficient = 1.0 
+price_spike_magnitude_coefficient = 1.10
 volume_drop_magnitude_coefficient = 1.0
 price_drop_magnitude_coefficient = 1.0
 
