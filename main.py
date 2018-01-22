@@ -4,6 +4,7 @@ import log
 import argparse
 import feed
 import strategy
+import time
 import broker
 
 
@@ -43,6 +44,14 @@ def menu():
                 pass
     if args.echo == 'test':
         print('Test mode selected')
+    if args.echo == 'paper_trade':
+        print('Paper trading mode selected')
+        while True:
+            try:
+                feed.get_bittrex_tape()
+                strategy.paper_trade()
+            except KeyboardInterrupt:
+                pass
 
     '''
     while True:
