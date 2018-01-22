@@ -1,12 +1,27 @@
+import datetime
+
+now = datetime.datetime.now()
 
 
 
 class TXT():
 
 
-    def write(self, file, data):
+    def write(self, file, text):
         f = open(file,'w')
-        f.write(data)
+        current_time = str(now.strftime("%Y-%m-%d %H:%M"))
+        write_info = current_time + ' -- ' + text
+        f.write(write_info)
+        f.close()
+
+
+
+    def write_next_line(self, file, text):
+        f = open(file, 'a')
+        f.write('\n\n')
+        current_time = str(now.strftime("%Y-%m-%d %H:%M"))
+        write_info = current_time + ' -- ' + text
+        f.write(write_info)
         f.close()
 
 
