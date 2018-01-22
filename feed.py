@@ -225,7 +225,8 @@ class Feed():
                     coin_table = i['symbol']
                     bid = i['bidPrice']
                     volume = i['volume']
-                    print('Getting binance data for: ', coin_table, '  ', end='\r')
+                    print('Getting binance data for: ', coin_table)
+                    # print('Getting binance data for: ', coin_table, '  ', end='\r') # amazon cloud doesn't like this
                     self.create_binance_table(coin_table)
                     self.write_to_binance_database(coin_table, bid, volume)
         except:
@@ -240,7 +241,8 @@ class Feed():
             all_coin_data = broker.get_data_for_all_coins('luno')
             for i in all_coin_data:
                 # figure out how to parse feed
-                print('    Getting luno data for: ', coin_table, '  ', end='\r')
+                print('    Getting luno data for: ', coin_table)
+                # print('    Getting luno data for: ', coin_table, '  ', end='\r')
                 self.create_luno_table(coin_table)
                 self.write_to_luno_database(coin_table, bid, volume)
         except:
@@ -255,7 +257,8 @@ class Feed():
             all_coin_data = broker.get_data_for_all_coins('bitgrail')
             for i in all_coin_data:
                 coin_table = re.sub('/','',i['market'])
-                print('Getting bitgrail data for: ', coin_table, '  ', end='\r')
+                print('Getting bitgrail data for: ', coin_table)
+                # print('Getting bitgrail data for: ', coin_table, '  ', end='\r')
                 bid = i['bid']
                 volume = i['volume']
                 self.create_bitgrail_table(coin_table)
@@ -272,7 +275,8 @@ class Feed():
             all_coin_data = broker.get_data_for_all_coins('kucoin')
             for i in all_coin_data:
                 coin_table = re.sub('-','',i['symbol'])
-                print('Getting kucoin data for: ', coin_table, '  ', end='\r')
+                print('Getting kucoin data for: ', coin_table)
+                # print('Getting kucoin data for: ', coin_table, '  ', end='\r')
                 bid = i['buy']
                 volume = i['vol']
                 self.create_kucoin_table(coin_table)
@@ -289,7 +293,8 @@ class Feed():
             all_coin_data = broker.get_data_for_all_coins('mercatox')
             for i in all_coin_data:
                 # figure out how to parse feed
-                print('    Getting mercatox data for: ', coin_table, '  ', end='\r')
+                # print('    Getting mercatox data for: ', coin_table, '  ', end='\r')
+                print('    Getting mercatox data for: ', coin_table)
                 self.create_mercatox_table(coin_table)
                 self.write_to_mercatox_database(coin_table, bid, volume)
         except:
@@ -305,7 +310,8 @@ class Feed():
            for i in all_coin_data:
                coin_table = re.sub(':','',i['pair'])
                bid = i['buy']
-               print('Getting bitflip data for: ', coin_table, '  ', end='\r')
+                # print('Getting bitflip data for: ', coin_table, '  ', end='\r')
+               print('Getting bitflip data for: ', coin_table)
                self.create_bitflip_table(coin_table)
                self.write_to_bitflip_database(coin_table, bid)
        except:
