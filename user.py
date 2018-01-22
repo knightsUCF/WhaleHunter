@@ -46,7 +46,7 @@ strategy_4 = False
 entry_lookback = 50 # ten of time series data "time units" (candlebuilding), this depends on how much time there is between units
 exit_lookback = 1
 volume_spike_magnitude_coefficient = 1.0 # 1.0 is 100%, unchanged
-price_spike_magnitude_coefficient = 1.10
+price_spike_magnitude_coefficient = 1.05
 volume_drop_magnitude_coefficient = 1.0
 price_drop_magnitude_coefficient = .99
 
