@@ -10,7 +10,7 @@ import numpy
 # from brokers import luno
 import bitgrail
 import kucoin
-from brokers import mercatox
+# from brokers import mercatox
 import bitflip
 
 
