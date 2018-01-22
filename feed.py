@@ -206,7 +206,8 @@ class Feed():
                 coin_table = re.sub('-','',i['MarketName'])
                 bid = i['Bid']
                 volume = i['Volume']
-                print('Getting bittrex data for: ', coin_table, '  ', end='\r')
+                print('Getting bittrex data for: ', coin_table)
+                # print('Getting bittrex data for: ', coin_table, '  ', end='\r') # command line in amazon cloud doesn't like this line
                 self.create_bittrex_table(coin_table)
                 self.write_to_bittrex_database(coin_table, bid, volume)
         except KeyboardInterrupt:
