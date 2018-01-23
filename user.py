@@ -44,7 +44,7 @@ strategy_4 = False
 # strategy 1 settings:
 
 # the three settings that currently matter
-entry_lookback = 500 # ten of time series data "time units" (candlebuilding), this depends on how much time there is between units
+entry_lookback = 50 # ten of time series data "time units" (candlebuilding), this depends on how much time there is between units
 price_spike_magnitude_coefficient = 1.1
 close_from_the_top_percentage = 0.95 # close when top dips below 5% from the highest price watermark
 
