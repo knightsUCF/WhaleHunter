@@ -230,7 +230,7 @@ class Strategy():
                 txt.write_next_line('paper_trading', text_to_write)
 
                 self.bought_units = self.btc_paper_balance * self.old_altcoin_price
-                bought_units_text_to_write = 'Bought ' + str(bought_units) + ' units of ' + str(self.last_traded_pair)
+                bought_units_text_to_write = 'Bought ' + str(self.bought_units) + ' units of ' + str(self.last_traded_pair)
                 
                 
                 self.queue = 'busy'
