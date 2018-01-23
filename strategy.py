@@ -45,6 +45,8 @@ class Strategy():
         self.old_altcoin_price = 0
         self.new_altcoin_price = 0
 
+        self.bought_units = 0
+
         self.last_traded_pair = ''
 
         self.all_time_high = 0
@@ -217,22 +219,33 @@ class Strategy():
         if self.queue is 'free':
             if self.entry_conditions():
                 print('reached entry conditions')
-                self.last_traded_pair = self.current_trade_pair
-                self.old_altcoin_price = self.current_price(broker, self.last_traded_pair)
-                text_to_write = 'Open: ' + str(self.current_trade_pair) + ' at ' + str(self.old_altcoin_price)
-                txt.write_next_line('paper_trading', text_to_write)
+
                 balance_to_write = 'BTC paper balance: ' + str(self.btc_paper_balance)
                 txt.write_next_line('paper_trading', balance_to_write)
+
+                self.last_traded_pair = self.current_trade_pair
+                self.old_altcoin_price = self.current_price(broker, self.last_traded_pair)
+
+                text_to_write = 'Open: ' + str(self.current_trade_pair) + ' at ' + str(self.old_altcoin_price)
+                txt.write_next_line('paper_trading', text_to_write)
+
+                self.bought_units = self.btc_paper_balance * self.old_altcoin_price
+                bought_units_text_to_write = 'Bought ' + str(bought_units) + ' units of ' + str(self.last_traded_pair)
+                
+                
                 self.queue = 'busy'
         if self.queue is 'busy':
             if self.exit_conditions(self.current_trade_pair):
                 print('reached exit conditions')
+
                 # trade.close('bittrex', self.current_trade_pair) # get back into bitcoin
                 self.new_altcoin_price = self.current_price(broker, self.last_traded_pair)
                 close_text_to_write = 'Close: ' + str(self.new_altcoin_price)
                 txt.write_next_line('paper_trading', close_text_to_write)
                 bitcoin_price = self.current_price('bittrex', 'USDTBTC')
-                self.btc_paper_balance = self.btc_paper_balance + (self.new_altcoin_price - self.old_altcoin_price) * bitcoin_price
+                
+                
+                self.btc_paper_balance = self.bought_units * self.new_altcoin_price
                 balance_text = 'New balance: ' + str(self.btc_paper_balance)
                 txt.write_next_line('paper_trading', balance_text)
                 # self.updated_balance = self.paper_trade_open_price # need to do the conversion in BTC
